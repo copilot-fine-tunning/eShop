@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="WebApp.styles.css" />
     <link rel="shortcut icon" href="images/favicon.png" />
+    <script>
+        // Apply theme immediately to prevent FOUC
+        (function() {
+            const themeCookie = document.cookie.split('; ').find(row => row.startsWith('theme='));
+            const theme = themeCookie ? themeCookie.split('=')[1] : 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
     <HeadOutlet />
 </head>
 

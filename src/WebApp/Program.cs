@@ -1,5 +1,6 @@
 ﻿using eShop.WebApp.Components;
 using eShop.ServiceDefaults;
+using eShop.WebApp.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseAntiforgery();
+
+app.UseThemeMiddleware();
 
 app.UseHttpsRedirection();
 

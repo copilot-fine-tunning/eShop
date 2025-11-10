@@ -3,12 +3,12 @@
 }
 
 .checkout h2 {
-    color: #000;
+    color: var(--text-primary);
     font-size: 1.25rem;
     font-style: normal;
     font-weight: 600;
     line-height: 140%;
-    border-bottom: 1px solid #D2D2D2;
+    border-bottom: 1px solid var(--border-color);
     width: 100%;
     padding-bottom: 0.5rem;
 }
@@ -19,7 +19,7 @@
     justify-content: space-between;
     align-items: center;
     align-self: stretch;
-    border-top: 1px solid #000;
+    border-top: 1px solid var(--border-color);
 }
 
 .checkout label {
@@ -27,7 +27,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
-    color: #444;
+    color: var(--text-secondary);
     font-size: 1rem;
     font-style: normal;
     font-weight: 400;
@@ -35,9 +35,9 @@
 }
 
 .checkout ::deep input {
-    border: 1px solid #000;
-    background: #FFF;
-    color: #000;
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-primary);
     font-size: 1rem;
     font-style: normal;
     font-weight: 400;
