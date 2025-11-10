@@ -24,6 +24,10 @@
   height: auto;
 }
 
+[data-theme="dark"] .eshop-footer .logo-footer img {
+  filter: invert(1) brightness(0.9);
+}
+
 
 @media only screen and (max-width: 480px) { 
   .eshop-footer-row {

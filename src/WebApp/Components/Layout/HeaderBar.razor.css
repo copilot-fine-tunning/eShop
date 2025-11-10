@@ -62,6 +62,10 @@
     min-width: 100px;
 }
 
+[data-theme="dark"] .eshop-header .logo-header img {
+    filter: invert(1) brightness(0.9);
+}
+
 .eshop-header-navbar {
     display: flex;
     flex-direction: row;

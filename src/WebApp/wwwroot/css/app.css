@@ -269,6 +269,11 @@ body {
     color: var(--text-primary);
 }
 
+/* Invert icons and images for dark mode */
+[data-theme="dark"] img[src*="/icons/"] {
+    filter: invert(1) brightness(0.9);
+}
+
 .container {
     position: relative;
     max-width: 120rem;
