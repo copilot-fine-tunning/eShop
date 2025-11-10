@@ -10,6 +10,12 @@
             <span class='name'>@Item.Name</span>
             <span class='price'>$@Item.Price.ToString("0.00")</span>
         </span>
+        @if (!string.IsNullOrEmpty(Item.Description))
+        {
+            <span class='catalog-product-description'>
+                @(Item.Description.Length > 100 ? Item.Description.Substring(0, 100) + "..." : Item.Description)
+            </span>
+        }
     </a>
 </div>
 
