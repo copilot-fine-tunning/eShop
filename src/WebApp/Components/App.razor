@@ -20,7 +20,28 @@
             console.log('Initial theme applied:', theme);
         })();
         
-        // Function to set theme and cookie - called from Blazor
+        // Function to get current theme
+        function getCurrentTheme() {
+            return document.documentElement.getAttribute('data-theme') || 'light';
+        }
+        
+        // Function to update button icons based on theme
+        function updateThemeIcons(theme) {
+            const moonIcon = document.getElementById('moon-icon');
+            const sunIcon = document.getElementById('sun-icon');
+            
+            if (moonIcon && sunIcon) {
+                if (theme === 'light') {
+                    moonIcon.style.display = 'block';
+                    sunIcon.style.display = 'none';
+                } else {
+                    moonIcon.style.display = 'none';
+                    sunIcon.style.display = 'block';
+                }
+            }
+        }
+        
+        // Function to set theme and cookie - called from Blazor or JavaScript
         window.setTheme = function(theme) {
             console.log('setTheme called with:', theme);
             // Validate theme value to prevent XSS
@@ -40,10 +61,30 @@
             // Verify cookie was set
             const verifyCookie = document.cookie.split('; ').find(row => row.startsWith('theme='));
             console.log('Cookie verification:', verifyCookie);
+            
+            // Update button icons
+            updateThemeIcons(theme);
         };
         
-        // Ensure function is available
+        // Function to toggle theme - called from button onclick
+        window.toggleThemeFromButton = function() {
+            console.log('toggleThemeFromButton called');
+            const currentTheme = getCurrentTheme();
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            console.log('Toggling from', currentTheme, 'to', newTheme);
+            window.setTheme(newTheme);
+        };
+        
+        // Initialize icons on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const currentTheme = getCurrentTheme();
+            updateThemeIcons(currentTheme);
+            console.log('Icons initialized for theme:', currentTheme);
+        });
+        
+        // Ensure functions are available
         console.log('setTheme function defined:', typeof window.setTheme);
+        console.log('toggleThemeFromButton function defined:', typeof window.toggleThemeFromButton);
     </script>
     <HeadOutlet />
 </head>

@@ -1,20 +1,18 @@
 @using eShop.WebApp.Services
 @inject ThemeService ThemeService
-@inject IJSRuntime JSRuntime
-@implements IDisposable
 
-<button class="theme-toggle" @onclick="ToggleTheme" aria-label="Toggle theme">
+<button class="theme-toggle" onclick="window.toggleThemeFromButton()" aria-label="Toggle theme">
     @if (ThemeService.CurrentTheme == "light")
     {
         <!-- Moon icon for dark mode -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
     }
     else
     {
         <!-- Sun icon for light mode -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
             <circle cx="12" cy="12" r="5"></circle>
             <line x1="12" y1="1" x2="12" y2="3"></line>
             <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -29,34 +27,7 @@
 </button>
 
 @code {
-    protected override void OnInitialized()
-    {
-        ThemeService.OnThemeChanged += OnThemeChanged;
-    }
-
-    private async Task ToggleTheme()
-    {
-        ThemeService.ToggleTheme();
-        
-        // Update the theme using JavaScript - this will set both the attribute and the cookie
-        try
-        {
-            await JSRuntime.InvokeVoidAsync("setTheme", ThemeService.CurrentTheme);
-        }
-        catch (Exception ex)
-        {
-            // Log error but don't throw - the theme state is still updated
-            Console.WriteLine($"Error setting theme: {ex.Message}");
-        }
-    }
-
-    private void OnThemeChanged()
-    {
-        InvokeAsync(StateHasChanged);
-    }
-
-    public void Dispose()
-    {
-        ThemeService.OnThemeChanged -= OnThemeChanged;
-    }
+    // Component is now purely server-side rendered
+    // Theme state is read from the service for initial render
+    // All interactivity is handled by JavaScript
 }
