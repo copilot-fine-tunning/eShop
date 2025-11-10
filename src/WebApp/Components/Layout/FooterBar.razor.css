@@ -1,6 +1,6 @@
 ﻿.eshop-footer {
   margin-top: 3.5rem;
-  background-color: #000;
+  background-color: var(--footer-bg);
   width: 100%;
 }
 
@@ -11,17 +11,21 @@
 
 .eshop-footer-row {
   padding: 3.5rem 10rem;
-  color: white;
+  color: var(--footer-text);
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
 .eshop-footer .logo-footer {
-  color: white;
+  color: var(--footer-text);
   margin-right: auto;
   width: 100px;
   height: auto;
+}
+
+[data-theme="dark"] .eshop-footer .logo-footer img {
+  filter: invert(1) brightness(0.9);
 }
 
 

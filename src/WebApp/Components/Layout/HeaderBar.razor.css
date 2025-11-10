@@ -36,7 +36,7 @@
 }
 
 .eshop-header-intro h1 {
-    color: #000;
+    color: var(--text-primary);
     font-size: 3.5rem;
     font-style: normal;
     font-weight: 700;
@@ -45,7 +45,7 @@
 }
 
 .eshop-header-intro p {
-    color: #000;
+    color: var(--text-primary);
     font-size: 2rem;
     font-style: normal;
     font-weight: 700;
@@ -54,12 +54,16 @@
 }
 
 .eshop-header .logo-header {
-    color: black;
+    color: var(--text-primary);
     margin-right: auto;
     width: 20vw;
     height: auto;
     max-width: 250px;
     min-width: 100px;
+}
+
+[data-theme="dark"] .eshop-header .logo-header img {
+    filter: invert(1) brightness(0.9);
 }
 
 .eshop-header-navbar {

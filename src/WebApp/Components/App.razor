@@ -9,6 +9,83 @@
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="WebApp.styles.css" />
     <link rel="shortcut icon" href="images/favicon.png" />
+    <script>
+        // Apply theme immediately to prevent FOUC
+        (function() {
+            const themeCookie = document.cookie.split('; ').find(row => row.startsWith('theme='));
+            let theme = themeCookie ? themeCookie.split('=')[1] : 'light';
+            // Validate theme value to prevent XSS
+            theme = (theme === 'dark' || theme === 'light') ? theme : 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+            console.log('Initial theme applied:', theme);
+        })();
+        
+        // Function to get current theme
+        function getCurrentTheme() {
+            return document.documentElement.getAttribute('data-theme') || 'light';
+        }
+        
+        // Function to update button icons based on theme
+        function updateThemeIcons(theme) {
+            const moonIcon = document.getElementById('moon-icon');
+            const sunIcon = document.getElementById('sun-icon');
+            
+            if (moonIcon && sunIcon) {
+                if (theme === 'light') {
+                    moonIcon.style.display = 'block';
+                    sunIcon.style.display = 'none';
+                } else {
+                    moonIcon.style.display = 'none';
+                    sunIcon.style.display = 'block';
+                }
+            }
+        }
+        
+        // Function to set theme and cookie - called from Blazor or JavaScript
+        window.setTheme = function(theme) {
+            console.log('setTheme called with:', theme);
+            // Validate theme value to prevent XSS
+            theme = (theme === 'dark' || theme === 'light') ? theme : 'light';
+            
+            // Set the data-theme attribute on html element
+            document.documentElement.setAttribute('data-theme', theme);
+            console.log('data-theme attribute set to:', theme);
+            
+            // Set the cookie
+            const maxAge = 365 * 24 * 60 * 60; // 365 days in seconds
+            const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+            const cookieString = `theme=${theme}; path=/; max-age=${maxAge}; SameSite=Lax${secure}`;
+            document.cookie = cookieString;
+            console.log('Cookie set:', cookieString);
+            
+            // Verify cookie was set
+            const verifyCookie = document.cookie.split('; ').find(row => row.startsWith('theme='));
+            console.log('Cookie verification:', verifyCookie);
+            
+            // Update button icons
+            updateThemeIcons(theme);
+        };
+        
+        // Function to toggle theme - called from button onclick
+        window.toggleThemeFromButton = function() {
+            console.log('toggleThemeFromButton called');
+            const currentTheme = getCurrentTheme();
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            console.log('Toggling from', currentTheme, 'to', newTheme);
+            window.setTheme(newTheme);
+        };
+        
+        // Initialize icons on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const currentTheme = getCurrentTheme();
+            updateThemeIcons(currentTheme);
+            console.log('Icons initialized for theme:', currentTheme);
+        });
+        
+        // Ensure functions are available
+        console.log('setTheme function defined:', typeof window.setTheme);
+        console.log('toggleThemeFromButton function defined:', typeof window.toggleThemeFromButton);
+    </script>
     <HeadOutlet />
 </head>
 

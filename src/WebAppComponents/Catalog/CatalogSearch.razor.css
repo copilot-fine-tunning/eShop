@@ -11,8 +11,8 @@
 }
 
 .catalog-search .search-badge {
-  background: #000;
-  color: #FFF;
+  background: var(--badge-bg);
+  color: var(--badge-text);
   font-size: 1rem;
   font-weight: 600;
   border-radius: 0.75rem;
@@ -25,14 +25,14 @@
 }
 
 .catalog-search-group h3 {
-  color: #000;
+  color: var(--text-primary);
   font-size: 1rem;
   font-weight: 600;
   line-height: 150%;
 }
 
 .catalog-search-group .catalog-search-group-tags {
-  border-top: 1px solid #404040;
+  border-top: 1px solid var(--border-color);
   display: flex;
   padding: 0.75rem 0;
   align-items: center;
@@ -50,7 +50,7 @@
   align-items: center;
   gap: 0.25rem;
   border-radius: 1.25rem;
-  color: #404040;
+  color: var(--text-secondary);
   font-family: 'Open Sans';
   font-size: 1rem;
   font-style: normal;
@@ -61,12 +61,12 @@
 
 .catalog-search-tag:hover {
     cursor: pointer;
-    background: #ddd;
+    background: var(--bg-secondary);
 }
 
 .catalog-search-tag.active {
-  background: #000;
-  color: #FFF;
+  background: var(--badge-bg);
+  color: var(--badge-text);
 }
 
 .catalog-search.button {
