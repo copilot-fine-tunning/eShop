@@ -39,7 +39,15 @@
         ThemeService.ToggleTheme();
         
         // Update the theme using JavaScript - this will set both the attribute and the cookie
-        await JSRuntime.InvokeVoidAsync("setTheme", ThemeService.CurrentTheme);
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("setTheme", ThemeService.CurrentTheme);
+        }
+        catch (Exception ex)
+        {
+            // Log error but don't throw - the theme state is still updated
+            Console.WriteLine($"Error setting theme: {ex.Message}");
+        }
     }
 
     private void OnThemeChanged()
