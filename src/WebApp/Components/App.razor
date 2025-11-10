@@ -19,11 +19,18 @@
             document.documentElement.setAttribute('data-theme', theme);
         })();
         
-        // Function to safely set theme attribute - called from Blazor
-        window.setThemeAttribute = function(theme) {
+        // Function to set theme and cookie - called from Blazor
+        window.setTheme = function(theme) {
             // Validate theme value to prevent XSS
             theme = (theme === 'dark' || theme === 'light') ? theme : 'light';
+            
+            // Set the data-theme attribute
             document.documentElement.setAttribute('data-theme', theme);
+            
+            // Set the cookie
+            const maxAge = 365 * 24 * 60 * 60; // 365 days in seconds
+            const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+            document.cookie = `theme=${theme}; path=/; max-age=${maxAge}; SameSite=Lax${secure}`;
         };
     </script>
     <HeadOutlet />
