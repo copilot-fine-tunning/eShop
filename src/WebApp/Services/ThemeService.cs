@@ -22,6 +22,11 @@ public class ThemeService
 
     public void SetTheme(string theme)
     {
+        // Validate theme value to prevent XSS
+        if (theme != "light" && theme != "dark")
+        {
+            theme = "light";
+        }
         CurrentTheme = theme;
     }
 
@@ -32,11 +37,19 @@ public class ThemeService
 
     public static string GetThemeFromCookie(HttpContext httpContext)
     {
-        return httpContext.Request.Cookies[ThemeCookieName] ?? "light";
+        var theme = httpContext.Request.Cookies[ThemeCookieName] ?? "light";
+        // Validate theme value to prevent XSS
+        return theme == "dark" ? "dark" : "light";
     }
 
     public static void SetThemeCookie(HttpContext httpContext, string theme)
     {
+        // Validate theme value to prevent XSS
+        if (theme != "light" && theme != "dark")
+        {
+            theme = "light";
+        }
+        
         var cookieOptions = new CookieOptions
         {
             HttpOnly = false, // JavaScript needs to read it for instant updates

@@ -47,8 +47,8 @@
         }
 
         // Update the data-theme attribute on the html element
-        await JSRuntime.InvokeVoidAsync("eval", 
-            $"document.documentElement.setAttribute('data-theme', '{ThemeService.CurrentTheme}')");
+        // Using a safer approach than eval - pass the theme value as a parameter
+        await JSRuntime.InvokeVoidAsync("setThemeAttribute", ThemeService.CurrentTheme);
     }
 
     private void OnThemeChanged()

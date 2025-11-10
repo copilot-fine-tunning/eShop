@@ -13,9 +13,18 @@
         // Apply theme immediately to prevent FOUC
         (function() {
             const themeCookie = document.cookie.split('; ').find(row => row.startsWith('theme='));
-            const theme = themeCookie ? themeCookie.split('=')[1] : 'light';
+            let theme = themeCookie ? themeCookie.split('=')[1] : 'light';
+            // Validate theme value to prevent XSS
+            theme = (theme === 'dark' || theme === 'light') ? theme : 'light';
             document.documentElement.setAttribute('data-theme', theme);
         })();
+        
+        // Function to safely set theme attribute - called from Blazor
+        window.setThemeAttribute = function(theme) {
+            // Validate theme value to prevent XSS
+            theme = (theme === 'dark' || theme === 'light') ? theme : 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        };
     </script>
     <HeadOutlet />
 </head>
