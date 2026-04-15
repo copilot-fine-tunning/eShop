@@ -5,7 +5,6 @@ A reference .NET application implementing an e-commerce website using a services
 
 ![eShop Reference Application architecture diagram](img/eshop_architecture.png)
 
-
 ![eShop homepage screenshot](img/eshop_homepage.png)
 
 ## Getting Started
