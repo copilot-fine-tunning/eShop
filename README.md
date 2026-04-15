@@ -1,6 +1,7 @@
 # eShop Reference Application - "AdventureWorks"
 
-A reference .NET application implementing an e-commerce website using a services-based architecture using [.NET Aspire](https://learn.microsoft.com/dotnet/aspire/).
+A reference .NET application implementing an e-commerce website using a services-based architecture using [.NET Aspire]
+ (https://learn.microsoft.com/dotnet/aspire/).
 
 ![eShop Reference Application architecture diagram](img/eshop_architecture.png)
 
