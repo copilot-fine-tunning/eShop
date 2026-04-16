@@ -30,7 +30,8 @@ jobs:
                   dotnet-quality: preview
 
             - name: Install Aspire CLI
-              run: dotnet tool install --global Aspire.Cli --prerelease || true
+              # '|| true' handles the case where the tool is already installed (exit code 1)
+              run: dotnet tool install --global Aspire.Cli --prerelease || dotnet tool update --global Aspire.Cli --prerelease || true
 
             - name: Add .NET tools to PATH
               run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
