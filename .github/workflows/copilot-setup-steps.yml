@@ -1,0 +1,75 @@
+name: "Copilot Setup Steps"
+
+# Allow testing of the setup steps from your repository's "Actions" tab, and
+# automatically run them when the file is changed to catch issues early.
+on:
+    workflow_dispatch:
+    push:
+        paths:
+            - .github/workflows/copilot-setup-steps.yml
+    pull_request:
+        paths:
+            - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+    # The job MUST be called `copilot-setup-steps` or it will not be picked up by Copilot.
+    copilot-setup-steps:
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Install .NET 10
+              uses: actions/setup-dotnet@v4
+              with:
+                  dotnet-version: "10.x"
+                  dotnet-quality: preview
+
+            - name: Install Aspire CLI
+              run: dotnet tool install --global Aspire.Cli --prerelease || true
+
+            - name: Add .NET tools to PATH
+              run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+            # The Identity.API project uses LibraryManager (libman) to restore client-side
+            # libraries from cdnjs at build time. Since cdnjs is blocked in this environment,
+            # we pre-populate the wwwroot/lib directories via npm so the build can proceed
+            # without network access to the CDN.
+            - name: Pre-install LibMan dependencies via npm
+              run: |
+                  mkdir -p src/Identity.API/wwwroot/lib/jquery \
+                           src/Identity.API/wwwroot/lib/bootstrap/css \
+                           src/Identity.API/wwwroot/lib/bootstrap/js \
+                           src/Identity.API/wwwroot/lib/jquery-validation-unobtrusive \
+                           src/Identity.API/wwwroot/lib/jquery-validate
+
+                  cd /tmp && npm install --prefer-offline jquery@3.6.3 bootstrap@5.2.3 \
+                      jquery-validation-unobtrusive@4.0.0 jquery-validation@1.19.5
+
+                  LIBDIR="$GITHUB_WORKSPACE/src/Identity.API/wwwroot/lib"
+                  NPM=/tmp/node_modules
+
+                  cp $NPM/jquery/dist/jquery.js              $LIBDIR/jquery/
+                  cp $NPM/jquery/dist/jquery.min.js          $LIBDIR/jquery/
+                  cp $NPM/bootstrap/dist/css/bootstrap.css   $LIBDIR/bootstrap/css/
+                  cp $NPM/bootstrap/dist/css/bootstrap.min.css $LIBDIR/bootstrap/css/
+                  cp $NPM/bootstrap/dist/js/bootstrap.bundle.js $LIBDIR/bootstrap/js/
+                  cp $NPM/bootstrap/dist/js/bootstrap.bundle.min.js $LIBDIR/bootstrap/js/
+                  touch $LIBDIR/bootstrap/css/bootstrap.css.map \
+                        $LIBDIR/bootstrap/css/bootstrap.min.css.map
+                  cp $NPM/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js \
+                     $LIBDIR/jquery-validation-unobtrusive/
+                  cp $NPM/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js \
+                     $LIBDIR/jquery-validation-unobtrusive/
+                  cp $NPM/jquery-validation/dist/jquery.validate.js  $LIBDIR/jquery-validate/
+                  cp $NPM/jquery-validation/dist/jquery.validate.min.js $LIBDIR/jquery-validate/
+
+            # Restore and build the solution. Pass /p:LibraryRestore=False to skip the
+            # libman CDN restore step (files were already placed above). Allow failure so
+            # Copilot can attempt recovery if needed.
+            - name: Restore and build solution
+              run: dotnet build eShop.Web.slnf /p:LibraryRestore=False || true
